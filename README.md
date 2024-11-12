@@ -10,20 +10,28 @@ sudo apt upgrade -y
 ```
 
 ### Step 2: Install Required Packages
+```bash
 sudo apt install gnupg software-properties-common -y
+```
 
 ### Step 3: Download the HashiCorp GPG Key for Terraform
-wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+```bash
+wget -O- https://apt.releases.hashicorp.com/gpg |
+sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+```
 
 ### Step 4: Add the HashiCorp APT Repository
-echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+```bash
+echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg]
+https://apt.releases.hashicorp.com $(lsb_release -cs) main" |
+sudo tee /etc/apt/sources.list.d/hashicorp.list
+```
 
-### Step 5: Update Ubuntu Package List
+### Step 5: Update Ubuntu Package List and install Terraform via APT
+```bash
 sudo apt update
-
-### Step 6: Install Terraform via APT
 sudo apt install terraform -y
-
+```
 
 
 ### Links:
