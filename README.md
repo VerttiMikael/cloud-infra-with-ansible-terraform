@@ -36,8 +36,8 @@ sudo apt install terraform -y
 
 ### Links:
 - Setting up Terraform
-- https://greenwebpage.com/community/how-to-install-terraform-on-ubuntu-24-04/
-- https://training.galaxyproject.org/training-material/topics/admin/tutorials/terraform/tutorial.html
+-- https://greenwebpage.com/community/how-to-install-terraform-on-ubuntu-24-04/
+-- https://training.galaxyproject.org/training-material/topics/admin/tutorials/terraform/tutorial.html
 
 - Setting up .tf files
-- https://registry.terraform.io/providers/terraform-provider-openstack/openstack/2.1.0/docs/resources/compute_floatingip_associate_v2
+-- https://registry.terraform.io/providers/terraform-provider-openstack/openstack/2.1.0/docs/resources/compute_floatingip_associate_v2
