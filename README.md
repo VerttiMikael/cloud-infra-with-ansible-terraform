@@ -77,8 +77,8 @@ nano main.tf
 # main.tf
 
 resource "openstack_compute_keypair_v2" "my-cloud-key" {  
-  name       = "new-tfans-key"  
-  public_key = "ssh-rsa AAA....”  
+  name       = "project1-key"  
+  public_key = "ssh-ed25519 AAA....”  
 }  
 
 # Create the first virtual machine   
