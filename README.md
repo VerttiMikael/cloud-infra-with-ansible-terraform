@@ -4,8 +4,10 @@ This project involves using Terraform to create a set of virtual machines, then 
 ## Installing Terraform on a Local Ubuntu Virtual Machine
 
 ### Step 1: Update and Upgrade System Packages
+```bash
 sudo apt update
 sudo apt upgrade -y
+```
 
 ### Step 2: Install Required Packages
 sudo apt install gnupg software-properties-common -y
@@ -21,6 +23,8 @@ sudo apt update
 
 ### Step 6: Install Terraform via APT
 sudo apt install terraform -y
+
+
 
 ### Links:
 - Setting up Terraform:
