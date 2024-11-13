@@ -78,6 +78,15 @@ terraform init
 ```
 
 ### Step 4: Configuring the main.tf file
+
+In this projects we will use ubuntu-24.04 as the image and the flavor standard.small
+Rest of the images and flavors can be found with the commands
+
+```bash
+openstack image list
+openstack flavor list
+```
+
 ```bash
 nano main.tf
 
@@ -180,6 +189,8 @@ terraform graph -type=plan | dot -Tpng >graph.png
 ```
 To see our current architecture 
 
+![Projects_Pics](/ProjectPictures/pic3.png)
+
 ## Ansible setup
  Now that we have deployed our virtual machines with terraform, we can start setting up our jumphost and HTTP load balancer with Ansible
 
@@ -260,7 +271,14 @@ VM_2
 VM_3 
 VM_4 
 ```
-lets test the connections to the virtual machines
+lets test the connections to the virtual machines using these commands
+
+```bash
+ansible -m ping csc_proxy
+ansible -m ping csc_vms
+```
+and we should get results like this
+![Projects_Pics](/ProjectPictures/pic6.png)
 
 ### Step 6. Modify webservers.yml, nginx.conf and index.html.j2
 
@@ -383,6 +401,9 @@ stream {
 ansible-playbook webservers.yml
 ```
 
+### Result
+
+We should now have a working 
 
 ### Links:
 - Setting up Terraform
