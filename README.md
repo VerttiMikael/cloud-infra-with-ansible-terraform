@@ -1,7 +1,10 @@
 # cloud-infra-with-ansible-terraform
 This project involves using Terraform to create a set of virtual machines, then configuring a jump host and an HTTP load balancer using Ansible.
 
+
+
 ## Installing Terraform on a Local Ubuntu Virtual Machine
+
 
 ### Step 1: Update and Upgrade System Packages
 ```bash
