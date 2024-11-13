@@ -206,16 +206,18 @@ verlep@verlep-VirtualBox:~$ source ansible-2.9.1/bin/activate
 ### Step 2: Make a myansible directory and add all the necessary files
 
 after that the file hierarchy should look like this:
-.
+```plaintext
+myansible/
 ├── ansible.cfg
-├── files
-│ └── nginx.conf
-│ └── nginx_proxy.conf
-├── inventory
-│ └── csc.ini
-├── templates
-│ └── index.html.j2
+├── files/
+│   ├── nginx.conf
+│   └── nginx_proxy.conf
+├── inventory/
+│   └── csc.ini
+├── templates/
+│   └── index.html.j2
 └── webservers.yml
+```
 
 ### Step 3. Modify ansible.cfg file
 ```bash
