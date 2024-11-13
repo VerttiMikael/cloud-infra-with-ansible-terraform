@@ -1,11 +1,11 @@
 # cloud-infra-with-ansible-terraform
 This project was made for course work and it involves using Terraform to create a set of virtual machines, then configuring a jump host and an HTTP load balancer using Ansible. 
 
-Prequisites:
+##Prequisites:
 - Linux operating machine or  local Ubuntu vm
 - Python virtual enviroment installed
 - ssh keypair for the vm instances
-
+---
 
 ## Installing Terraform on a Local Ubuntu Virtual Machine
 
@@ -39,7 +39,7 @@ sudo tee /etc/apt/sources.list.d/hashicorp.list
 sudo apt update
 sudo apt install terraform -y
 ```
-
+---
 ## Setting up terraform 
 
 ### Step 1: creating providers.tf and main.tf files
@@ -191,6 +191,7 @@ To see our current architecture
 
 ![Projects_Pics](/ProjectPictures/pic3.png)
 
+---
 ## Ansible setup
  Now that we have deployed our virtual machines with terraform, we can start setting up our jumphost and HTTP load balancer with Ansible
 
@@ -400,10 +401,11 @@ stream {
 ```bash
 ansible-playbook webservers.yml
 ```
-
+---
 ### Result
 
-We should now have a working 
+We should now have a working envionment consisting of 1 jumphost and HTTP load balancer and 3 web servers
+![Projects_Pics](/ProjectPictures/pic8.png)
 
 ### Links:
 - Setting up Terraform
@@ -413,3 +415,6 @@ https://training.galaxyproject.org/training-material/topics/admin/tutorials/terr
 - Setting up .tf files
 https://registry.terraform.io/providers/terraform-provider-openstack/openstack/2.1.0/docs/resources/compute_floatingip_associate_v2
 https://registry.terraform.io/providers/terraform-provider-openstack/openstack/2.1.0/docs/resources/compute_secgroup_v2
+
+-Setting up Ansible
+https://www.oreilly.com/library/view/ansible-up-and/9781098109141/ch03.html#creating_a_group
