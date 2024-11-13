@@ -409,7 +409,7 @@ ansible-playbook webservers.yml
 We should now have a working envionment consisting of 1 jumphost and HTTP load balancer and 3 web servers
 ![Projects_Pics](/ProjectPictures/pic8.png)
 
-### Links:
+### Sources:
 - Setting up Terraform
 https://greenwebpage.com/community/how-to-install-terraform-on-ubuntu-24-04/
 https://training.galaxyproject.org/training-material/topics/admin/tutorials/terraform/tutorial.html
@@ -418,5 +418,5 @@ https://training.galaxyproject.org/training-material/topics/admin/tutorials/terr
 https://registry.terraform.io/providers/terraform-provider-openstack/openstack/2.1.0/docs/resources/compute_floatingip_associate_v2
 https://registry.terraform.io/providers/terraform-provider-openstack/openstack/2.1.0/docs/resources/compute_secgroup_v2
 
--Setting up Ansible
+- Setting up Ansible
 https://www.oreilly.com/library/view/ansible-up-and/9781098109141/ch03.html#creating_a_group
