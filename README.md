@@ -168,11 +168,11 @@ resource "openstack_compute_secgroup_v2" "secgroup_2" {
 ```bash
 terraform apply 
 ```
-[!Projects_Pics](/PrjocectsPictures/pic1.png)
+[!Projects_Pics](/PrjocectPictures/pic1.png)
 
 We can now see in the openstack dashboard that our vm instances are online 
 
-[!Projects_Pics](/PrjocectsPictures/pic2.png)
+[!Projects_Pics](/PrjocectPictures/pic2.png)
 
 Lets now run  
 ```bash
