@@ -1,7 +1,7 @@
 # cloud-infra-with-ansible-terraform
 This project was made for course work and it involves using Terraform to create a set of virtual machines, then configuring a jump host and an HTTP load balancer using Ansible. 
 
-##Prequisites:
+## Prerequisites:
 - Linux operating machine or  local Ubuntu vm
 - Python virtual enviroment installed
 - ssh keypair for the vm instances
