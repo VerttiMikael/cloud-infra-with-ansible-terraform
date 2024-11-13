@@ -1,6 +1,10 @@
 # cloud-infra-with-ansible-terraform
-This project involves using Terraform to create a set of virtual machines, then configuring a jump host and an HTTP load balancer using Ansible.
+This project was made for course work and it involves using Terraform to create a set of virtual machines, then configuring a jump host and an HTTP load balancer using Ansible. 
 
+Prequisites:
+- Linux operating machine or  local Ubuntu vm
+- Python virtual enviroment installed
+- ssh keypair for the vm instances
 
 
 ## Installing Terraform on a Local Ubuntu Virtual Machine
@@ -163,6 +167,217 @@ resource "openstack_compute_secgroup_v2" "secgroup_2" {
 ### Step 5: Save and deploy changes 
 ```bash
 terraform apply 
+```
+
+We can now see in the openstack dashboard that our vm instances are online 
+
+Lets now run  
+```bash
+terraform graph -type=plan | dot -Tpng >graph.png  
+```
+To see our current architecture 
+
+## Ansible setup
+ Now that we have deployed our virtual machines with terraform, we can start setting up our jumphost and HTTP load balancer with Ansible
+
+### Step 1: Making a virtual enviroment for ansible 
+
+```bash
+verlep@verlep-VirtualBox:~$ python3 -m venv ansible-2.9.1 
+verlep@verlep-VirtualBox:~$ source ansible-2.9.1/bin/activate 
+(ansible-2.9.1) verlep@verlep-VirtualBox:~$ pip install ansible  
+```
+
+### Step 2: Make a myansible directory and add all the necessary files
+
+after that the file hierarchy should look like this:
+.
+├── ansible.cfg
+├── files
+│ └── nginx.conf
+│ └── nginx_proxy.conf
+├── inventory
+│ └── csc.ini
+├── templates
+│ └── index.html.j2
+└── webservers.yml
+
+### Step 3. Modify ansible.cfg file
+```bash
+[defaults]
+inventory = inventory/csc.ini
+host_key_checking = False
+stdout_callback = yaml
+callback_enabled = timer
+interpreter_python = auto_silent 
+```
+
+### Step 4. Modify the ssh config file
+```bash
+Host *  
+  ForwardAgent yes  
+
+Host VM1_host 
+  Hostname 195.148.21.XX 
+  User ubuntu  
+  Port 22  
+  IdentityFile /home/lepver/.ssh/id_ed25519  
+
+Host VM_2 
+  Hostname 192.168.1.XX 
+  User ubuntu 
+  ProxyJump VM1_host 
+
+Host VM_3 
+  Hostname 192.168.1.XX 
+  User ubuntu 
+  ProxyJump VM1_host
+
+Host VM_4 
+  Hostname 192.168.1.XX 
+  User ubuntu 
+  ProxyJump VM1_host 
+```
+
+### Step 5. Modify the csc.ini file
+```bash
+[webservers] 
+testserver ansible_port=22  
+
+[webservers:vars] 
+ansible_host=195.148.22.XXX 
+ansible_user=ubuntu 
+ansible_private_key_file=/home/verlep/.ssh/id_ed25519 
+
+[csc_proxy] 
+VM1_host   
+
+[csc_vms] 
+VM_2 
+VM_3 
+VM_4 
+```
+lets test the connections to the virtual machines
+
+### Step 6. Modify webservers.yml, nginx.conf and index.html.j2
+
+webservers.yml
+```bash
+- name: Configure HTTP load balancer with nginx 
+  hosts: csc_proxy 
+  become: yes 
+  tasks: 
+    - name: Install nginx 
+      apt: 
+        name: nginx 
+        state: present 
+        update_cache: yes 
+  
+    - name: Copy nginx proxy configuration to load balancer 
+      copy: 
+        src: files/nginx_proxy.conf 
+        dest: /etc/nginx/nginx.conf 
+        owner: root 
+        group: root 
+        mode: '0644' 
+
+    - name: Enable and start nginx on load balancer 
+      service: 
+        name: nginx 
+        state: started 
+        enabled: yes 
+
+- name: Configure web servers with nginx 
+  hosts: csc_vms 
+  become: yes 
+  tasks: 
+    - name: Install nginx 
+      apt: 
+        name: nginx 
+        state: present 
+        update_cache: yes 
+  
+    - name: Copy nginx web server configuration 
+      copy: 
+        src: files/nginx.conf 
+        dest: /etc/nginx/nginx.conf 
+        owner: root 
+        group: root 
+        mode: '0644' 
+
+    - name: Copy index.html template to web server document root 
+      template: 
+        src: templates/index.html.j2 
+        dest: /usr/share/nginx/html/index.html 
+        owner: www-data 
+        group: www-data 
+        mode: '0644' 
+
+    - name: Enable and start nginx on web servers 
+      service: 
+        name: nginx 
+        state: started 
+        enabled: yes 
+```
+nginx.conf
+```bash
+server { 
+        listen 80 default_server; 
+        listen [::]:80 default_server ipv6only=on; 
+
+        root /usr/share/nginx/html; 
+        index index.html index.htm;   
+
+        server_name localhost;   
+        location / { 
+                try_files $uri $uri/ =404; 
+        } 
+} 
+```
+index.html.j2
+```bash
+<html> 
+  <head> 
+    <title>Welcome to ansible</title> 
+  </head> 
+  <body> 
+  <h1>Nginx, configured by Ansible</h1> 
+  <p>If you can see this, Ansible successfully installed nginx.</p> 
+  <p>Running on {{ inventory_hostname }}</p> 
+  </body> 
+</html>  
+```
+
+### Step 6. Modify the nginx_proxy.conf file
+```bash
+# Load ngx_stream_module  
+load_module /usr/lib/nginx/modules/ngx_stream_module.so; 
+
+events { 
+    worker_connections 8192; 
+} 
+
+stream { 
+    # Log file settings  
+    log_format dns '$remote_addr - - [$time_local] $protocol $status $bytes_sent $bytes_received $sess> 
+    access_log /var/log/nginx/access.log dns; 
+    error_log /var/log/nginx/error.log; 
+
+    upstream myapp1 { 
+        server 192.168.1.XX:80; # Private IP address of the vm2 and port number 
+        server 192.168.1.XX:80; # Private IP address of the vm3 and port number 
+        server 192.168.1.XX:80; # Private IP address of the vm4 and port number 
+    } 
+    server { 
+        listen 80;             # Nginx load balancer listen port 80 
+        proxy_pass myapp1;     # The server group myapp1 
+    } 
+}  
+```
+
+### Step 7. Deploy the playbook
+```bash
+ansible-playbook webservers.yml
 ```
 
 
