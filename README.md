@@ -372,7 +372,7 @@ index.html.j2
 </html>  
 ```
 
-### Step 6. Modify the nginx_proxy.conf file
+### Step 7. Modify the nginx_proxy.conf file
 ```bash
 # Load ngx_stream_module  
 load_module /usr/lib/nginx/modules/ngx_stream_module.so; 
@@ -399,14 +399,14 @@ stream {
 }  
 ```
 
-### Step 7. Deploy the playbook
+### Step 8. Deploy the playbook
 ```bash
 ansible-playbook webservers.yml
 ```
 ---
 ### Result
 
-We should now have a working envionment consisting of 1 jumphost and HTTP load balancer and 3 web servers
+You should now have a working environment consisting of one jump host, an HTTP load balancer, and three web servers.
 ![Projects_Pics](/ProjectPictures/pic8.PNG)
 
 ### Sources:
