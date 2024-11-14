@@ -1,10 +1,10 @@
 # cloud-infra-with-ansible-terraform
-This project was made for course work and it involves using Terraform to create a set of virtual machines, then configuring a jumphost and aa HTTP load balancer using Ansible. 
+This project involves using Terraform to create a set of virtual machines and then configuring a jump host and an HTTP load balancer using Ansible. It was created as part of a coursework project. 
 
 ## Prerequisites:
-- Linux operating machine or  local Ubuntu vm
-- Python virtual enviroment installed
-- ssh keypair for the vm instances
+- Linux operating system or local Ubuntu vm
+- Python virtual environment installed
+- ssh keypair for the VM instances
 ---
 
 ## Installing Terraform on a Local Ubuntu Virtual Machine
@@ -64,7 +64,7 @@ required_version = ">= 0.14.0"
 
 provider "openstack" { 
   user_name   =  
-  tenant_name = "project_2011826" 
+  tenant_name = "project_20118XX" 
   password    =  
   auth_url    = "https://pouta.csc.fi:5001/v3" 
   region      = "regionOne" 
@@ -79,8 +79,7 @@ terraform init
 
 ### Step 4: Configuring the main.tf file
 
-In this projects we will use ubuntu-24.04 as the image and the flavor standard.small
-Rest of the images and flavors can be found with the commands
+Use ubuntu-24.04 as the image and standard.small as the flavor. Other images and flavors can be found with:
 
 ```bash
 openstack image list
@@ -103,7 +102,7 @@ resource "openstack_compute_instance_v2" "VM1" {
   image_id      = "be795267-2cbb-44d8-aa6f-4411d0df7df9"  
   flavor_id     = "d4a2cb9c-99da-4e0f-82d7-3313cca2b2c2"  
   network {  
-    name = "project_2011826"  
+    name = "project_20118XX"  
   }  
   security_groups = [openstack_compute_secgroup_v2.secgroup_1.name]  
   key_pair ="${ openstack_compute_keypair_v2.my-cloud-key.name}"  
@@ -116,7 +115,7 @@ resource "openstack_compute_instance_v2" "VM2-4" {
   image_id      = "be795267-2cbb-44d8-aa6f-4411d0df7df9"  
   flavor_id     = "d4a2cb9c-99da-4e0f-82d7-3313cca2b2c2"  
   network {  
-    name = "project_2011826"  
+    name = "project_20118XX"  
   }  
   security_groups = [openstack_compute_secgroup_v2.secgroup_2.name]  
   key_pair ="${ openstack_compute_keypair_v2.my-cloud-key.name}"  
@@ -193,9 +192,9 @@ To see our current architecture
 
 ---
 ## Ansible setup
- Now that we have deployed our virtual machines with terraform, we can start setting up our jumphost and HTTP load balancer with Ansible
+With the virtual machines deployed using Terraform, we can set up the jump host and HTTP load balancer using Ansible.
 
-### Step 1: Making a virtual enviroment for ansible 
+### Step 1: Create a Virtual Environment for Ansible 
 
 ```bash
 verlep@verlep-VirtualBox:~$ python3 -m venv ansible-2.9.1 
@@ -203,9 +202,8 @@ verlep@verlep-VirtualBox:~$ source ansible-2.9.1/bin/activate
 (ansible-2.9.1) verlep@verlep-VirtualBox:~$ pip install ansible  
 ```
 
-### Step 2: Make a myansible directory and add all the necessary files
+### Step 2: Create the Ansible Directory Structure
 
-after that the file hierarchy should look like this:
 ```plaintext
 myansible/
 ├── ansible.cfg
@@ -238,7 +236,7 @@ Host VM1_host
   Hostname 195.148.21.XX 
   User ubuntu  
   Port 22  
-  IdentityFile /home/lepver/.ssh/id_ed25519  
+  IdentityFile /your/dir/.ssh/keyfile 
 
 Host VM_2 
   Hostname 192.168.1.XX 
@@ -264,7 +262,7 @@ testserver ansible_port=22
 [webservers:vars] 
 ansible_host=195.148.22.XXX 
 ansible_user=ubuntu 
-ansible_private_key_file=/home/verlep/.ssh/id_ed25519 
+ansible_private_key_file=/your/dir/.ssh/keyfile  
 
 [csc_proxy] 
 VM1_host   
