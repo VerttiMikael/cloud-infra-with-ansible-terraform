@@ -407,7 +407,7 @@ ansible-playbook webservers.yml
 ### Result
 
 We should now have a working envionment consisting of 1 jumphost and HTTP load balancer and 3 web servers
-![Projects_Pics](/ProjectPictures/pic8.png)
+![Projects_Pics](/ProjectPictures/pic8.PNG)
 
 ### Sources:
 - Setting up Terraform
