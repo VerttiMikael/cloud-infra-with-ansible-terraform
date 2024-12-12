@@ -294,7 +294,7 @@ webservers.yml
         name: nginx 
         state: present 
         update_cache: yes 
-  
+
     - name: Copy nginx proxy configuration to load balancer 
       copy: 
         src: files/nginx_proxy.conf 
@@ -302,12 +302,16 @@ webservers.yml
         owner: root 
         group: root 
         mode: '0644' 
+  
 
     - name: Enable and start nginx on load balancer 
       service: 
         name: nginx 
         state: started 
         enabled: yes 
+
+    - name: Restart nginx 
+      service: name=nginx state=restarted 
 
 - name: Configure web servers with nginx 
   hosts: csc_vms 
@@ -318,14 +322,17 @@ webservers.yml
         name: nginx 
         state: present 
         update_cache: yes 
-  
-    - name: Copy nginx web server configuration 
+
+    - name: Copy nginx config file 
       copy: 
-        src: files/nginx.conf 
-        dest: /etc/nginx/nginx.conf 
-        owner: root 
-        group: root 
-        mode: '0644' 
+        src: nginx.conf 
+        dest: /etc/nginx/sites-available/default 
+
+    - name: Enable configuration 
+      file: > 
+        dest=/etc/nginx/sites-enabled/default 
+        src=/etc/nginx/sites-available/default 
+        state=link 
 
     - name: Copy index.html template to web server document root 
       template: 
@@ -340,6 +347,9 @@ webservers.yml
         name: nginx 
         state: started 
         enabled: yes 
+
+    - name: Restart nginx 
+      service: name=nginx state=restarted 
 ```
 nginx.conf
 ```bash
