@@ -415,6 +415,7 @@ ansible-playbook webservers.yml
 ### Result
 
 You should now have a working environment consisting of one jump host, an HTTP load balancer, and three web servers.
+![Projects_Pics](/ProjectPictures/pic9.PNG)
 ![Projects_Pics](/ProjectPictures/pic8.PNG)
 
 ### Sources:
