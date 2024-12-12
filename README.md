@@ -386,13 +386,13 @@ stream {
     error_log /var/log/nginx/error.log; 
 
     upstream myapp1 { 
-        server 192.168.1.XX:80; # Private IP address of the vm2 and port number 
-        server 192.168.1.XX:80; # Private IP address of the vm3 and port number 
-        server 192.168.1.XX:80; # Private IP address of the vm4 and port number 
+        server 192.168.1.XX:80; 
+        server 192.168.1.XX:80; 
+        server 192.168.1.XX:80; 
     } 
     server { 
-        listen 80;             # Nginx load balancer listen port 80 
-        proxy_pass myapp1;     # The server group myapp1 
+        listen 80; 
+        proxy_pass myapp1;  
     } 
 }  
 ```
